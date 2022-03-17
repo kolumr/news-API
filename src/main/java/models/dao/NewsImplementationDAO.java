@@ -1,4 +1,5 @@
 package models.dao;
 
-public class NewsImplementationDAO {
+public class NewsImplementationDAO implements NewsDAO{
+
 }
