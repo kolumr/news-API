@@ -50,5 +50,11 @@ public class App {
         });
 
         //fetching a specific user
+        get("users/:userId", "application/json", (request, response) -> {
+            int userId = Integer.parseInt(request.params("userId"));
+            Users user = usersImplementationDAO.getUserInfo(userId);
+            return  gson.toJson(user);
+
+        });
     }
 }
