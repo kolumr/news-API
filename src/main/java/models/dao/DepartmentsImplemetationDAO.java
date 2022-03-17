@@ -16,8 +16,8 @@ public class DepartmentsImplemetationDAO implements DepartmentsDAO{
     @Override
     public void addDepartment(Departments department) {
         String sql = "INSERT INTO departments (name, description) VALUES (:departmentName, :description)";
-        try(Connection con = sql2o.open()){
-            int id = (int) con.createQuery(sql, true)
+        try(Connection conn = sql2o.open()){
+            int id = (int) conn.createQuery(sql, true)
                     .bind(department)
                     .executeUpdate()
                     .getKey();
@@ -31,8 +31,8 @@ public class DepartmentsImplemetationDAO implements DepartmentsDAO{
 
     @Override
     public List<Departments> allDepartments() {
-        try(Connection con = sql2o.open()){
-            return con.createQuery("SELECT * FROM departments;")
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM departments;")
                     .executeAndFetch(Departments.class);
         }
     }

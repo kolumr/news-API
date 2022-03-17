@@ -18,8 +18,8 @@ public class UsersImplementationDAO implements UsersDAO{
     @Override
     public void add(Users user) {
         String sql = "INSERT INTO users (name, position, role, department_id) VALUES (:username, :position, :role, :department_id)";
-        try(Connection con = sql2o.open()){
-            int id = (int) con.createQuery(sql, true)
+        try(Connection conn = sql2o.open()){
+            int id = (int) conn.createQuery(sql, true)
                     .bind(user)
                     .executeUpdate()
                     .getKey();
@@ -32,8 +32,8 @@ public class UsersImplementationDAO implements UsersDAO{
 
     @Override
     public List<Users> getAll() {
-        try(Connection con = sql2o.open()){
-            return con.createQuery("SELECT * FROM users")
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM users")
                     .executeAndFetch(Users.class);
         }
     }
@@ -41,8 +41,8 @@ public class UsersImplementationDAO implements UsersDAO{
     @Override
     public List<Users> getAllUsersInDepartment(int departmentId) {
         List<Users> allDeptUsers = new ArrayList<>();
-        try (Connection con = sql2o.open()) {
-            allDeptUsers.add(con.createQuery("SELECT * FROM users WHERE department_id = :id")
+        try (Connection conn = sql2o.open()) {
+            allDeptUsers.add(conn.createQuery("SELECT * FROM users WHERE department_id = :id")
                     .addParameter("id", departmentId)
                     .executeAndFetchFirst(Users.class));
         }
@@ -52,8 +52,8 @@ public class UsersImplementationDAO implements UsersDAO{
     @Override
     public Users getUserInfo(int id) {
         String sql = "SELECT * FROM users WHERE id = :id";
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql)
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetchFirst(Users.class);
         }

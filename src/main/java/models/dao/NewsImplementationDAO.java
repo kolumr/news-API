@@ -19,8 +19,8 @@ public class NewsImplementationDAO implements NewsDAO{
     @Override
     public void addNews(News news) {
         String sql = "INSERT INTO news (headline, content, department_id) VALUES (:headline, :content, :department_id)";
-        try(Connection con = sql2o.open()){
-            int id = (int) con.createQuery(sql, true)
+        try(Connection conn = sql2o.open()){
+            int id = (int) conn.createQuery(sql, true)
                     .bind(news)
                     .executeUpdate()
                     .getKey();
@@ -40,8 +40,8 @@ public class NewsImplementationDAO implements NewsDAO{
     @Override
     public List<News> getDepartmentNews(int departmentId) {
         List<News> allDeptNews = new ArrayList<>();
-        try (Connection con = sql2o.open()) {
-            allDeptNews.add(con.createQuery("SELECT * FROM news WHERE department_id = :id")
+        try (Connection conn = sql2o.open()) {
+            allDeptNews.add(conn.createQuery("SELECT * FROM news WHERE department_id = :id")
                     .addParameter("id", departmentId)
                     .executeAndFetchFirst(News.class));
         }
