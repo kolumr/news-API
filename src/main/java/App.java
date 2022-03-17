@@ -3,6 +3,7 @@ import models.dao.NewsImplementationDAO;
 import models.dao.UsersImplementationDAO;
 import models.pojos.Departments;
 import models.pojos.News;
+import models.pojos.Users;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import static spark.Spark.*;
@@ -40,5 +41,14 @@ public class App {
             newsImplementationDAO.addNews(news);
             return gson.toJson(news);
         });
+
+        //adding a new user
+        post("/users/new", "application/json", (request, response) -> {
+            Users user = gson.fromJson(request.body(), Users.class);
+            usersImplementationDAO.add(user);
+            return gson.toJson(user);
+        });
+
+        //fetching a specific user
     }
 }
