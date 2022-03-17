@@ -1,3 +1,4 @@
+import exceptions.ApiException;
 import models.dao.DepartmentsImplemetationDAO;
 import models.dao.NewsImplementationDAO;
 import models.dao.UsersImplementationDAO;
@@ -28,6 +29,7 @@ public class App {
         post("/departments/new", "application/json", (request, response) -> {
             Departments department = gson.fromJson(request.body(),Departments.class);
             departmentsImplemetationDAO.addDepartment(department);
+            response.status(201);
             return gson.toJson(department);
         });
 
@@ -40,6 +42,7 @@ public class App {
         post("/news/new", "application/json", (request, response) -> {
             News news = gson.fromJson(request.body(), News.class);
             newsImplementationDAO.addNews(news);
+            response.status(201);
             return gson.toJson(news);
         });
 
@@ -47,6 +50,7 @@ public class App {
         post("/users/new", "application/json", (request, response) -> {
             Users user = gson.fromJson(request.body(), Users.class);
             usersImplementationDAO.add(user);
+            response.status(201);
             return gson.toJson(user);
         });
 
@@ -54,6 +58,11 @@ public class App {
         get("users/:userId", "application/json", (request, response) -> {
             int userId = Integer.parseInt(request.params("userId"));
             Users user = usersImplementationDAO.getUserInfo(userId);
+
+            if (user == null){
+                throw new ApiException(404, String.format("No User with the id: \"%s\" exists", request.params("userId")));
+            }
+
             return  gson.toJson(user);
 
         });
@@ -62,8 +71,28 @@ public class App {
         get("departments/:departmentId/users", "application/json", (request, response) -> {
             int departmentId = Integer.parseInt(request.params("departmentId"));
             List<Users> departmentUsers = usersImplementationDAO.getAllUsersInDepartment(departmentId);
+
+            if (departmentUsers == null){
+                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", request.params("departmentId")));
+            }
+
             return  gson.toJson(departmentUsers);
 
+        });
+
+        exception(ApiException.class, (exc, req, res) -> {
+            ApiException err = (ApiException) exc;
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("status", err.getStatusCode());
+            jsonMap.put("errorMessage", err.getMessage());
+            res.type("application/json"); //after does not run in case of an exception.
+            res.status(err.getStatusCode()); //set the status
+            res.body(gson.toJson(jsonMap));  //set the output.
+        });
+
+
+        after((req, res) ->{
+            res.type("application/json");
         });
     }
 }
