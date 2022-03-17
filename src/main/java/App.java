@@ -2,6 +2,7 @@ import models.dao.DepartmentsImplemetationDAO;
 import models.dao.NewsImplementationDAO;
 import models.dao.UsersImplementationDAO;
 import models.pojos.Departments;
+import models.pojos.News;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import static spark.Spark.*;
@@ -34,6 +35,10 @@ public class App {
         });
 
         //adding new news item
-        post("/news/new", "application/json", (request, response) -> );
+        post("/news/new", "application/json", (request, response) -> {
+            News news = gson.fromJson(request.body(), News.class);
+            newsImplementationDAO.addNews(news);
+            return gson.toJson(news);
+        });
     }
 }
