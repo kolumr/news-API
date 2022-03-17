@@ -13,9 +13,19 @@ import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 public class App {
-    public static void main(String[] args) {
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
+
+    public static void main(String[] args) throws Exception{
+        port(getHerokuAssignedPort());
         //creating a connection to postgres
-        String connectionString = "jdbc:postgresql://localhost:5432/news_portal";
+        String connectionString = "jdbc:postgresql://localhost:5432/news_api";
         Sql2o sql2o = new Sql2o(connectionString, "postgres", "");
         Connection conn = sql2o.open();
 
