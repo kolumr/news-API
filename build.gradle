@@ -10,8 +10,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'junit:junit:4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation "com.sparkjava:spark-core:2.6.0" //spark framework : java/kotlin based framework for creating web applications
+    implementation "com.sparkjava:spark-template-handlebars:2.5.5" //spark's template for creating layouts
+    implementation 'org.slf4j:slf4j-simple:1.7.21' //spark error formatting
+    implementation group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41+' //postgresql
+    implementation group: 'org.sql2o', name: 'sql2o', version: '1.5.4+' //library used to execute sql statements against your JDBC compliant database(postgres)
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.13' // ADD ME FOR POSTGRES VERSION 10.x
+    implementation 'com.google.code.gson:gson:2.5'
 }
 
 test {
