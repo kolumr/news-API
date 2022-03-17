@@ -1,18 +1,33 @@
-## NEWS API
-
+# NEWS API
+### Description
 A REST API for querying and retrieving scoped news and information.
 
 1. As a user I can add departments.
 2. As a user I can add Users associated with a particular department.
 3. As a user I can add news, retrieve all news or retrieve news belonging to a particular department.
 
-Concepts
+### Concepts
+
 1. PostgresSQL db
 2. Java (Object Oriented Programming)
 3. Spark Web Framework
 4. GSON
 5. Handlebars
 
+### setup
+Download Java Development kit 11. Previous or later versions may
+have some minimal compatibility issue. Gradle is the tool used to
+build and run the code. Preferred IDE is IntelliJ IDEA.
+
+In PSQL:
+
+CREATE DATABASE news_api;
+\c news_api
+CREATE TABLE news (id SERIAL PRIMARY KEY, headline VARCHAR, content VARCHAR, department_id INTEGER);
+CREATE TABLE departments (id SERIAL PRIMARY KEY, name varchar, description VARCHAR);
+CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR, position varchar, role VARCHAR, department_id INTEGER);
+
+CREATE DATABASE news_api_test WITH TEMPLATE news_api;
 ## API ENDPOINTS AND PARAMETERS
 
 Base URL : * Run IpConfig : get IP4 address.
