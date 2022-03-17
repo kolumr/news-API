@@ -8,6 +8,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import static spark.Spark.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 public class App {
@@ -54,6 +55,14 @@ public class App {
             int userId = Integer.parseInt(request.params("userId"));
             Users user = usersImplementationDAO.getUserInfo(userId);
             return  gson.toJson(user);
+
+        });
+
+        //fetching all users in a department
+        get("departments/:departmentId/users", "application/json", (request, response) -> {
+            int departmentId = Integer.parseInt(request.params("departmentId"));
+            List<Users> departmentUsers = usersImplementationDAO.getAllUsersInDepartment(departmentId);
+            return  gson.toJson(departmentUsers);
 
         });
     }
