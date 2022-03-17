@@ -28,5 +28,12 @@ public class App {
             return gson.toJson(department);
         });
 
+        //getting all departments
+        get("/departments", "application/json", (request, response) -> {
+            return gson.toJson(departmentsImplemetationDAO.allDepartments());
+        });
+
+        //adding new news item
+        post("/news/new", "application/json", (request, response) -> );
     }
 }
